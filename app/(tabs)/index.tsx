@@ -13,22 +13,6 @@ let isModePenjemputanActive = false; // Tracks if the mode is active
 let polygonPoints = []; // Polygon points
 let defaultPolygonArray = []; // Default polygon points
 
-// Register the background task
-TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
-  if (error) {
-    console.error('Background location task error:', error);
-    return;
-  }
-  if (data) {
-    const { locations } = data;
-    console.log('Received new locations:', locations);
-    if (locations.length > 0) {
-      const location = locations[0];
-      onUserLocationChange({ nativeEvent: { coordinate: location.coords } });
-    }
-  }
-});
-
 export default function mainScreen() {
   const mapRef = useRef(null); // Reference to the map
   const [polygonPoints, setPolygonPoints] = useState([]);
@@ -82,6 +66,22 @@ export default function mainScreen() {
     };
     loadMarkerQueue();
   }, []);
+
+  // Register the background task
+  TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+    if (error) {
+      console.error('Background location task error:', error);
+      return;
+    }
+    if (data) {
+      const { locations } = data;
+      console.log('Received new locations:', locations);
+      if (locations.length > 0) {
+        const location = locations[0];
+        onUserLocationChange({ nativeEvent: { coordinate: location.coords } });
+      }
+    }
+  });
   
   const showNextMarker = () => {
     if (currentMarkerIndex < markerQueue.length - 1) {
