@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, StyleSheet, View, Button, Alert, Switch } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MapView, { Marker, Polygon } from 'react-native-maps';
+import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import axios from 'axios';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
@@ -518,10 +518,12 @@ const stopBackgroundLocationUpdates = async () => {
 
       <MapView
         ref={mapRef}
+        provider={PROVIDER_GOOGLE}
         style={styles.map}
         showsUserLocation
         showsMyLocationButton
         rotateEnabled={false}
+        // liteMode={true}
         onUserLocationChange={onUserLocationChange}
         initialRegion={mapRegion}
       >
